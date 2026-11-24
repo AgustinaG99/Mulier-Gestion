@@ -1,0 +1,91 @@
+@page "/clientes"
+@using Mulier.Web.Models
+
+<PageTitle>Clientes | Mulier</PageTitle>
+
+<h1>Gestión de clientes</h1>
+
+<p>Registrá y administrá los clientes de Mulier.</p>
+
+<h2>Nuevo cliente</h2>
+
+<div class="mb-3">
+    <label class="form-label">Nombre *</label>
+    <input class="form-control" type="text" @bind="cliente.Nombre"/>
+    <p>Nombre ingresado: @cliente.Nombre</p>
+
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Apellido *</label>
+    <input class="form-control" type="text" @bind="cliente.Apellido" />
+    <p>Apellido ingresado: @cliente.Apellido</p>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Teléfono</label>
+    <input class="form-control" type="tel" @bind="cliente.Telefono" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Dirección</label>
+    <input class="form-control" type="text" @bind="cliente.Direccion" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Observaciones</label>
+    <textarea class="form-control" rows="3" @bind="cliente.Observaciones"></textarea>
+</div>
+
+<button class="btn btn-primary" type="button" @onclick="GuardarCliente">
+    Guardar cliente
+</button>
+<h2 class="mt-4">Clientes registrados</h2>
+
+@if (clientes.Count == 0)
+{
+    <p>Todavía no hay clientes registrados.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in clientes)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Telefono</td>
+                    <td>@item.Direccion</td>
+                    <td>@item.Observaciones</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private Cliente cliente = new Cliente();
+    private List<Cliente> clientes = new();
+
+    private void GuardarCliente()
+    {
+        if (string.IsNullOrWhiteSpace(cliente.Nombre) ||
+            string.IsNullOrWhiteSpace(cliente.Apellido))
+        {
+            return;
+        }
+
+        clientes.Add(cliente);
+
+        cliente = new Cliente();
+    }
+}
